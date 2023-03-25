@@ -9,4 +9,5 @@
 .likes-div {
     background-color: rgb(231,23,57);
     color: whitesmoke;
+    border-radius: 5px;
 }
