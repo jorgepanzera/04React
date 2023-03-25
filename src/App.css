@@ -5,3 +5,8 @@
 .navbar-left {
     float: left;
 }
+
+.likes-div {
+    background-color: rgb(231,23,57);
+    color: whitesmoke;
+}

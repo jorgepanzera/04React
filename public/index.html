@@ -34,6 +34,18 @@
     <link rel="stylesheet" href="../src/App.css">
     <title>Full Stack 04 React</title>
   </head>
+  <script>
+    const date1 = new Date("2016-07-27T16:45-03:00")
+    const date2 = new Date("2016-07-28T16:45-03:00")
+    let diff = date2-date1
+    console.log(diff)
+    var minutes = Math.floor(diff / 60000);
+  var seconds = ((diff % 60000) / 1000).toFixed(0);
+  var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    console.log(minutes)
+    console.log(seconds)
+    console.log(hours)
+  </script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
@@ -42,6 +54,30 @@
     </div>
 
     <div id="test">
+
+      <div class="likes-div">
+        <i class="fa fa-heart" aria-hidden="true"></i>
+        <p class="card-text">43k</p>
+      </div>
+
+      <div class="col-12 col-xs-6 col-sm-6 col-md-4 col-lg-3 d-flex">
+        <div class="card">
+          <img src="../assets/img/Avengers.JPG" class="card-img-top" alt="...">
+            <div class="card-body">
+              <div class="d-flex flex-row">
+                <div class="col-9 justify-content-start">
+                  <p class="text-muted">3min ago</p>
+                  <p class="card-text ">@eric</p>
+                </div>
+                <div class="col-3 d-flex justify-content-end align-items-center">
+                  <span class="fa fa-heart"> </span>
+                    <p class="card-text my-0">43k</p>
+                </div>
+              </div>
+             </div>
+            <a href="#" class="btn btn-primary mx-auto mb-2">Do Something</a>
+        </div>
+      </div>
 
       <i class="fa-solid fa-user"></i>
       <span class="fa-solid fa-user"></span>
