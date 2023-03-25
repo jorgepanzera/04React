@@ -1,10 +1,8 @@
 function SearchBar() {
     return (
-      <nav className="navbar bg-light">
-        <div className="container-fluid">
-          <span className="navbar-brand mb-0 h1">Game of Thrones</span>
-        </div>
-      </nav>
+      <div className="container form-outline mt-2">
+        <input type="search" id="form-search" className="form-control" placeholder="Search" aria-label="Search" />
+      </div>
     );
   }
   
