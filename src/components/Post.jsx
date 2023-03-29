@@ -8,9 +8,6 @@ function Post({ img, age, user, likes, message, comments }) {
     user = "@" + user
     comments = "(" + comments + ")"
 
-   console.log(img)
-   console.log(image)
-
     return (
       <div className="col-12 col-xs-6 col-sm-6 col-md-4 col-lg-3 d-flex">
         <div class="card">
