@@ -34,18 +34,7 @@
     <link rel="stylesheet" href="../src/App.css">
     <title>Full Stack 04 React</title>
   </head>
-  <script>
-    const date1 = new Date("2016-07-27T16:45-03:00")
-    const date2 = new Date("2016-07-28T16:45-03:00")
-    let diff = date2-date1
-    console.log(diff)
-    var minutes = Math.floor(diff / 60000);
-  var seconds = ((diff % 60000) / 1000).toFixed(0);
-  var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    console.log(minutes)
-    console.log(seconds)
-    console.log(hours)
-  </script>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" class="container">
@@ -53,23 +42,33 @@
 
     </div>
 
-    <div id="test" style="display: none;">
+    <!-- div para probar html -->
+    <!--<div id="test" style="display: none;">
 
       <div class="col-12 col-xs-6 col-sm-6 col-md-4 col-lg-3 d-flex">
         <div class="card">
 
-          <img src="../assets/img/Avengers.JPG" class="card-img-top" alt="...">
+          <img src="../assets/img/Avengers.png" class="card-img-top" alt="...">
             <div class="card-body">
               <div class="d-flex flex-row">
                 <div class="col-9 justify-content-start">
                   <p class="text-muted">3min ago</p>
                   <p class="card-text ">@eric</p>
                 </div>
-                <div class="col-3 d-flex justify-content-end align-items-center">
+                <div class="col-3 d-flex justify-content-end">
+                   <div>
+                      <button class="likes-button">
+                        <span class="fa fa-heart"> </span>
+                        43k
+                      </button>
+                    </div>
+                  <div></div>
+                  <!--
                   <div class="d-flex likes-div px-1 py-1">
                     <span class="fa fa-heart"> </span>
                     <p class="card-text my-0 mx-1">43k</p>
                   </div>
+              
                 </div>
               </div>
               <p class="card-text mt-2">Posteriormente a los eventos de Avengers: Endgame,2​3​ y tras 8 meses de la muerte de su mentor Tony Stark, Peter Parker decide pasar unas merecidas vacaciones en Europa junto a sus amigos Ned Leeds y Michelle; pero sus planes al final se ven truncados cuando Nick Fury le encomienda una nueva misión</p>
@@ -81,17 +80,12 @@
                   </div>
                 </div>
               </div>     
-            </div> <!--Termina card body-->
+            </div> 
 
          </div>
       </div>
+    </div> -->
 
-      <i class="fa-solid fa-user"></i>
-      <span class="fa-solid fa-user"></span>
-
-      <i class="fa fa-heart-o" aria-hidden="true"></i>
-      <i class="fa fa-bolt" aria-hidden="true"></i>
-    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

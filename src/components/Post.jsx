@@ -20,15 +20,17 @@ function Post({ img, age, user, likes, message, comments }) {
           <div class="card-body">
 
             <div class="d-flex flex-row">
-              <div class="col-9 justify-content-start">
+              <div class="col-6 justify-content-start">
                 <p class="text-muted">{age}</p>
                 <p class="fw-bold">{user}</p>
               </div>
-              <div class="col-3 d-flex justify-content-end align-items-center">
-                <div class="d-flex likes-div px-1 py-1">
-                  <span class="fa fa-heart"> </span>
-                  <p class="card-text my-0 mx-1">{likes}k</p>
+              <div class="col-6 d-flex justify-content-end">
+                <div>
+                  <button class="likes-button pb-1 pt-1">
+                    <span class="fa fa-heart">  </span> {likes}k
+                  </button>
                 </div>
+                <div></div>
               </div>
             </div>
             
