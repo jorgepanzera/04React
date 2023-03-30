@@ -1,11 +1,11 @@
 
 function Profile({avatar, username, bio }) {
 
-   console.log("Render Profile")
-
     return (
-      <div className="col-12 col-xs-6 col-sm-6 col-md-4 col-lg-3 d-flex">
-        Profile
+      <div className="container text-center mx-auto">
+        <img src={avatar} className="image-profile mx-auto" alt="" />
+        <p className="text-center pt-2 fw-bold col-12 col-md-9 col-xl-6 mx-auto">@{username}</p>
+        <h6 className="text-center pt-2 col-12 col-md-9 col-xl-6 mx-auto"> {bio} </h6>
       </div>
     );
   }

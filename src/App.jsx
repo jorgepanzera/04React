@@ -8,15 +8,19 @@ import Profile from './components/Profile';
 
 function App() {
 
+  // State
   const [section, setSection] = useState('Normal')
 
+  // Props para hijos
+  const profileAvatar = require('./assets/images/profile.PNG')
+  const username = "jpanzera"
+  const bio = "Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi"
+
   const onLogoClick = () => {
-    console.log("onlogoclick")
     setSection('Normal')
   }
 
   const onProfileClick = () => {
-    console.log("onprofileclick")    
     setSection('Profile')
   }
 
@@ -37,7 +41,7 @@ function App() {
     return (
       <div className="App">
         <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
-        <Profile />
+        <Profile avatar={profileAvatar} username={username} bio={bio} />
       </div>
     )
   }

@@ -18,3 +18,10 @@
     border-radius: 5px;
     border-color: transparent;
 }
+
+.image-profile {
+    width: 100%;
+    max-width: 100px;
+    height: 100%;
+    max-height: 100px;    
+}
