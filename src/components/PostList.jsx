@@ -7,10 +7,10 @@ function PostList({posts}) {
         <Post
           key={i}
           img={post.img}
-          age={post.age}
-          user={post.user}
+          createdAt={post.createdAt}
+          author={post.author}
           likes={post.likes}
-          message={post.message}
+          text={post.text}
           comments={post.comments}
         />
       ))}

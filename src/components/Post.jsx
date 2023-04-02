@@ -1,12 +1,24 @@
+import { getDateTimeDifference } from "../assets/js/utils"
+import { useState } from "react"
 
 
+function Post({ img, createdAt, author, likes, text, comments }) {
 
-function Post({ img, age, user, likes, message, comments }) {
-
+    // Preparar datos para el post
     const image = require('../assets/images/' + img)
-    age = age + " ago"
-    user = "@" + user
+    let now = new Date()
+    const postAge = getDateTimeDifference(now,createdAt)
+    const age = `${postAge.cantidad} ${postAge.unidad} ago`
+    let user = "@" + author
     comments = "(" + comments + ")"
+
+    // state para el likes (debiera terminar actualizando una db a traves de una API)
+    const [count, setCount] = useState(likes)
+
+    // para gestionar los likes
+    const handleLikes = () => {
+      setCount(count+1)
+    }
 
     return (
       <div className="col-12 col-xs-6 col-sm-6 col-md-4 col-lg-3 d-flex">
@@ -23,15 +35,15 @@ function Post({ img, age, user, likes, message, comments }) {
               </div>
               <div className="col-6 d-flex justify-content-end">
                 <div>
-                  <button className="likes-button pb-1 pt-1">
-                    <span className="fa fa-heart">  </span> {likes}k
+                  <button className="likes-button pb-1 pt-1" onClick={handleLikes}>
+                    <span className="fa fa-heart">  </span> {count}k
                   </button>
                 </div>
                 <div></div>
               </div>
             </div>
             
-            <p className="card-text fw-normal mt-2">{message}</p>
+            <p className="card-text fw-normal mt-2">{text}</p>
 
             <div className="row d-flex">
               <div className="col-9 justify-content-start align-items-center">
@@ -49,20 +61,7 @@ function Post({ img, age, user, likes, message, comments }) {
     );
   }
   
-  
-  
-
-    
-      
-
-        
-   
-      
-
-   
-
-
-  export default Post;
+ export default Post;
   
 
   
