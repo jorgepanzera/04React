@@ -4,6 +4,8 @@ import NavBar from './components/NavBar'
 import SearchBar from './components/SearchBar';
 import PostList from './components/PostList';
 import Profile from './components/Profile';
+import { getProfile } from './services/profileServices';
+import { getPosts}  from './services/postServices';
 
 
 function App() {
@@ -11,14 +13,21 @@ function App() {
   // State
   const [section, setSection] = useState('Normal')
   const [search, setSearch] = useState('')
-  const [firstLoad, setfirstLoad] = useState(true)
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true)
 
-  console.log(`App ${search}`)
-
-  // Props para hijos
-  const profileAvatar = require('./assets/images/profile.PNG')
+  // Obtener datos del profile
+  const profileAvatar = require(`./assets/images/profile.PNG`)
   const username = "jpanzera"
   const bio = "Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi"
+
+  console.log(`App ${search}`)
+  
+
+  // UseEffect documentation
+  // https://dmitripavlutin.com/react-useeffect-explanation/
+
+  
 
   // Funciones que se usan desde componente NavBar
   const onLogoClick = () => {
@@ -35,28 +44,36 @@ function App() {
   }
 
   
-  // Effect para cargar los posts a los 3 segundos y mostrar los post
-  // usar los 3 segundos solamente con firstLoad = true
-  /*
-    if firstload
-       espero 3 segundos
-       setPosts
-       firstload = false
-    else
-      setPost - viene de searchbar 
-  */
-
+  // Effect para cargar los posts a los 3 segundos y setLoading false
+  useEffect(() => {
+    getPosts().then((data) => {
+      setPosts(data);
+      setLoading(false)
+    });
+  }, []);
 
   // Render condicional 
 
   if (section === 'Normal') {
-    return (
-      <div className="App">
-        <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
-        <SearchBar value={search} onSearch={onSearch} />
-        <PostList />
-      </div>
-    )
+    if (loading) {
+      return (
+        <div className="App">
+          <div className='container mx-auto text-center mt-5'> 
+            <h1>Loading...</h1>
+          </div>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="App">
+          <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
+          <SearchBar value={search} onSearch={onSearch} />
+          <PostList posts={posts} />
+        </div>
+      )
+    }
+
   }
 
   if (section === 'Profile') {
