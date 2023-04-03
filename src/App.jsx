@@ -13,6 +13,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filteredPosts, setFilteredPosts] = useState([])
 
   // Obtener datos del profile
   let profileData = getProfile()
@@ -34,13 +35,16 @@ function App() {
 
   // Funciones que se usan desde componente SearchBar
   const onSearch = (searchString) => {
-    setSearch(searchString);
+    setSearch(searchString)
+    const filtered = posts.filter(post => post.text.toUpperCase().includes(searchString.toUpperCase()))
+    setFilteredPosts(filtered)
   };
 
   // Effect para cargar los posts a los 3 segundos y setLoading false
   useEffect(() => {
     getPosts().then((data) => {
       setPosts(data);
+      setFilteredPosts(data)
       setLoading(false);
     });
   }, []);
@@ -61,7 +65,7 @@ function App() {
         <div className="App">
           <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
           <SearchBar value={search} onSearch={onSearch} />
-          <PostList posts={posts} />
+          <PostList posts={filteredPosts} />
         </div>
       );
     }
