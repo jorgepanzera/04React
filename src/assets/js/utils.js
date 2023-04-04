@@ -1,6 +1,4 @@
-// prueba de restar fechas para obtener el x time ago  (time puede ser minutes, hours, days)
-//const date1 = new Date("2023-03-31T16:45-03:00")
-//const date2 = new Date("2016-07-28T16:45-03:00")
+
 
 export function getDateTimeDifference(date1, date2) {
 
