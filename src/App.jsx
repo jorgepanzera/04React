@@ -27,6 +27,8 @@ function App() {
   if (token){
     setLoginOk(true)
   }
+  console.log(token)
+  console.log(loginOk)
 
   console.log(`App ${search}`);
 
@@ -61,9 +63,11 @@ function App() {
   // Render condicional
 
   if (!loginOk) {
+    return(
     <div className="App">
       <Login  />
     </div>
+    )
   }
 
   if (section === "Normal") {
