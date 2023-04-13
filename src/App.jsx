@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 import PostList from "./components/PostList";
 import Profile from "./components/Profile";
+import Login from "./components/Login";
 import { getProfile } from "./services/profileServices";
 import { getPosts } from "./services/postServices";
 
@@ -14,10 +15,18 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredPosts, setFilteredPosts] = useState([])
+  const [loginOk, setLoginOk] = useState(false)
 
   // Obtener datos del profile
   let profileData = getProfile()
+  console.log(profileData.avatar)
   const profileAvatar = require(`./assets/images/${profileData.avatar}`);
+
+  // Verificar si ya tengo un token guardado
+  let token = localStorage.getItem("myThreePicsToken")
+  if (token){
+    setLoginOk(true)
+  }
 
   console.log(`App ${search}`);
 
@@ -50,6 +59,12 @@ function App() {
   }, []);
 
   // Render condicional
+
+  if (!loginOk) {
+    <div className="App">
+      <Login  />
+    </div>
+  }
 
   if (section === "Normal") {
     if (loading) {
