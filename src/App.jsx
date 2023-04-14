@@ -5,7 +5,7 @@ import SearchBar from "./components/SearchBar";
 import PostList from "./components/PostList";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
-import { getProfile } from "./services/profileServices";
+import { getProfile } from "./services/userServices";
 import { getPosts } from "./services/postServices";
 
 function App() {
@@ -15,22 +15,12 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredPosts, setFilteredPosts] = useState([])
-  const [loginOk, setLoginOk] = useState(false)
+  const [loginOk, setLoginOk] = useState(localStorage.getItem("myThreePicsToken"))
 
   // Obtener datos del profile
   let profileData = getProfile()
-  console.log(profileData.avatar)
   const profileAvatar = require(`./assets/images/${profileData.avatar}`);
 
-  // Verificar si ya tengo un token guardado
-  let token = localStorage.getItem("myThreePicsToken")
-  if (token){
-    setLoginOk(true)
-  }
-  console.log(token)
-  console.log(loginOk)
-
-  console.log(`App ${search}`);
 
   // UseEffect documentation
   // https://dmitripavlutin.com/react-useeffect-explanation/
@@ -51,6 +41,12 @@ function App() {
     setFilteredPosts(filtered)
   };
 
+
+  // Funciones que se usan desde componente Login
+  const onLoginComplete = (value) => {
+    setLoginOk(value)
+  }
+
   // Effect para cargar los posts a los 3 segundos y setLoading false
   useEffect(() => {
     getPosts().then((data) => {
@@ -62,42 +58,43 @@ function App() {
 
   // Render condicional
 
-  if (!loginOk) {
-    return(
-    <div className="App">
-      <Login  />
-    </div>
-    )
-  }
-
-  if (section === "Normal") {
-    if (loading) {
-      return (
-        <div className="App">
-          <div className="container mx-auto text-center mt-5">
-            <h1>Loading...</h1>
+  if (loginOk) {
+    if (section === "Normal") {
+      if (loading) {
+        return (
+          <div className="App">
+            <div className="container mx-auto text-center mt-5">
+              <h1>Loading...</h1>
+            </div>
           </div>
-        </div>
-      );
-    } else {
+        );
+      } else {
+        return (
+          <div className="App">
+            <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
+            <SearchBar value={search} onSearch={onSearch} />
+            <PostList posts={filteredPosts} />
+          </div>
+        );
+      }
+    }
+  
+    if (section === "Profile") {
       return (
         <div className="App">
           <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
-          <SearchBar value={search} onSearch={onSearch} />
-          <PostList posts={filteredPosts} />
+          <Profile avatar={profileAvatar} username={profileData.username} bio={profileData.bio} />
         </div>
       );
     }
+  } else {
+    return(
+      <div className="App">
+        <Login onLoginComplete={onLoginComplete}  />
+      </div>
+      )
   }
 
-  if (section === "Profile") {
-    return (
-      <div className="App">
-        <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
-        <Profile avatar={profileAvatar} username={profileData.username} bio={profileData.bio} />
-      </div>
-    );
-  }
 }
 
 
