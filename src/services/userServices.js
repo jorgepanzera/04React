@@ -1,35 +1,34 @@
 import axios from "axios";
-import data from "../data/profiles.json";
 
 export async function getToken(username, password) {
   try {
-
     const headers = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin':'*'
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     };
-
 
     const response = await axios.post(
       "https://three-points.herokuapp.com/api/login",
       `{"username":"${username}", "password":"${password}"}`,
       { headers: headers }
     );
-    
+
     if (response.data.token) {
       localStorage.setItem("myThreePicsToken", response.data.token);
       return true;
     } else {
       return false;
     }
-    
   } catch (error) {
     if (error.response) {
-      if (error.response.status === 401 && localStorage.getItem("myThreePicsToken")) {
-        localStorage.removeItem("myThreePicsToken")
+      if (
+        error.response.status === 401 &&
+        localStorage.getItem("myThreePicsToken")
+      ) {
+        localStorage.removeItem("myThreePicsToken");
       }
     }
-    return(false)
+    return false;
   }
 }
 
@@ -45,42 +44,47 @@ export async function getToken(username, password) {
 }
 */
 
-
-export function getProfile() {
-
-  // Obtener user id (propiedad sub) desde el payload del token
+export async function getProfile() {
   
-  if (localStorage.getItem("myThreePicsToken")) {
-    const userId = getPayload(localStorage.getItem("myThreePicsToken"))["sub"]
-    console.log(localStorage.getItem("myThreePicsToken"))
-    console.log(userId)
+  const token = localStorage.getItem("myThreePicsToken");
+  let userId = "";
+
+  console.log(token)
+
+  if (token) {
+    // Obtener user id (propiedad sub) desde el payload del token
+    userId = getPayload(token)["sub"];
   }
 
-  /*
+  console.log(userId)
+
+  const headers = {
+    "Authorization": `Bearer ${token}`,
+  };
+
   try {
     const response = await axios.get(
-      `https://three-points.herokuapp.com/api/users/${userId}`
+      `https://three-points.herokuapp.com/api/users/${userId}`,
+      { headers: headers }
     );
-  
-    console.log(response.data)
+
+    return response.data;
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401 && localStorage.getItem("myThreePicsToken")) {
-        localStorage.removeItem("myThreePicsToken")
+        localStorage.removeItem("myThreePicsToken");
       }
     }
-    */
+  }
 
-  return data;
 }
-
 
 // Obtener el Payload del token para obtener el user id (sub)
 //{sub: '6136944fcd79ba24707e2f82', exp: 1681521250, iat: 1681517650}
 function getPayload(token) {
   if (token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace('-', '+').replace('_', '/');
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace("-", "+").replace("_", "/");
     return JSON.parse(atob(base64));
   }
 }

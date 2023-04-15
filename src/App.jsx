@@ -16,10 +16,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [filteredPosts, setFilteredPosts] = useState([])
   const [loginOk, setLoginOk] = useState(localStorage.getItem("myThreePicsToken"))
-
-  // Obtener datos del profile
-  let profileData = getProfile()
-  const profileAvatar = require(`./assets/images/${profileData.avatar}`);
+  const [profile, setProfile] = useState()
 
 
   // UseEffect documentation
@@ -49,12 +46,25 @@ function App() {
 
   // Effect para cargar los posts a los 3 segundos y setLoading false
   useEffect(() => {
+
+    // Cargar posts desde API
     getPosts().then((data) => {
       setPosts(data);
       setFilteredPosts(data)
       setLoading(false);
     });
-  }, []);
+  }, [])
+
+
+  // Effect para cargar el profile del usuario logueado
+  useEffect(() => {
+
+    // Cargar profile desde API
+    getProfile().then((data) => { 
+      setProfile(JSON.parse(`{"avatar" : "${data.avatar}", "username" : "${data.username}", "bio" : "${data.bio}"}`))
+    });
+  }, [loginOk])
+  
 
   // Render condicional
 
@@ -83,7 +93,7 @@ function App() {
       return (
         <div className="App">
           <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
-          <Profile avatar={profileAvatar} username={profileData.username} bio={profileData.bio} />
+          <Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />
         </div>
       );
     }
