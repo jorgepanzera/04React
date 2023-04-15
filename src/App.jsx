@@ -10,7 +10,7 @@ import { getPosts } from "./services/postServices";
 
 function App() {
   // State
-  const [section, setSection] = useState("Normal");
+  const [section, setSection] = useState("Normal")
   const [search, setSearch] = useState("");
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
