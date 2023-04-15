@@ -49,14 +49,10 @@ export async function getProfile() {
   const token = localStorage.getItem("myThreePicsToken");
   let userId = "";
 
-  console.log(token)
-
   if (token) {
     // Obtener user id (propiedad sub) desde el payload del token
     userId = getPayload(token)["sub"];
   }
-
-  console.log(userId)
 
   const headers = {
     "Authorization": `Bearer ${token}`,

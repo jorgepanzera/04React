@@ -18,9 +18,8 @@ function App() {
   const [loginOk, setLoginOk] = useState(localStorage.getItem("myThreePicsToken"))
   const [profile, setProfile] = useState()
 
+  console.log(`token: ${localStorage.getItem("myThreePicsToken")}`)
 
-  // UseEffect documentation
-  // https://dmitripavlutin.com/react-useeffect-explanation/
 
   // Funciones que se usan desde componente NavBar
   const onLogoClick = () => {
@@ -44,6 +43,9 @@ function App() {
     setLoginOk(value)
   }
 
+  // UseEffect documentation
+  // https://dmitripavlutin.com/react-useeffect-explanation/
+
   // Effect para cargar los posts a los 3 segundos y setLoading false
   useEffect(() => {
 
@@ -63,7 +65,7 @@ function App() {
     getProfile().then((data) => { 
       setProfile(JSON.parse(`{"avatar" : "${data.avatar}", "username" : "${data.username}", "bio" : "${data.bio}"}`))
     });
-  }, [loginOk])
+  }, [loginOk]) // Se ejecuta de vuelta si cambia el token
   
 
   // Render condicional

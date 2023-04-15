@@ -5,7 +5,6 @@ import { useState } from "react"
 function Post({ img, createdAt, author, likes, text, comments }) {
 
     // Preparar datos para el post
-    const image = require('../assets/images/' + img)
     let now = new Date()
     const postAge = getDateTimeDifference(now,createdAt)
     const age = `${postAge.cantidad} ${postAge.unidad} ago`
@@ -24,7 +23,7 @@ function Post({ img, createdAt, author, likes, text, comments }) {
       <div className="col-12 col-xs-6 col-sm-6 col-md-4 col-lg-3 d-flex">
         <div className="card">
 
-          <img src={image} className="card-img-top" alt="..." />
+          <img src={img} className="card-img-top" alt="..." />
 
           <div className="card-body">
 
