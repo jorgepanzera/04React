@@ -18,9 +18,7 @@ function App() {
   const [loginOk, setLoginOk] = useState(localStorage.getItem("myThreePicsToken"))
   const [profile, setProfile] = useState()
 
-  console.log(`token: ${localStorage.getItem("myThreePicsToken")}`)
-
-
+  
   // Funciones que se usan desde componente NavBar
   const onLogoClick = () => {
     setSection("Normal");
@@ -40,6 +38,7 @@ function App() {
 
   // Funciones que se usan desde componente Login
   const onLoginComplete = (value) => {
+    console.log(`onLoginComplete ${value}`)
     setLoginOk(value)
   }
 
@@ -50,21 +49,25 @@ function App() {
   useEffect(() => {
 
     // Cargar posts desde API
-    getPosts().then((data) => {
-      setPosts(data);
-      setFilteredPosts(data)
-      setLoading(false);
-    });
-  }, [])
+    if (loginOk) {
+      getPosts().then((data) => {
+        setPosts(data);
+        setFilteredPosts(data)
+        setLoading(false);
+      });
+    }
+  }, [loginOk]) // Se ejecuta de vuelta si cambia el token
 
 
   // Effect para cargar el profile del usuario logueado
   useEffect(() => {
 
     // Cargar profile desde API
-    getProfile().then((data) => { 
-      setProfile(JSON.parse(`{"avatar" : "${data.avatar}", "username" : "${data.username}", "bio" : "${data.bio}"}`))
-    });
+    if (loginOk) {
+      getProfile().then((data) => { 
+        setProfile(JSON.parse(`{"avatar" : "${data.avatar}", "username" : "${data.username}", "bio" : "${data.bio}"}`))
+      });
+    }
   }, [loginOk]) // Se ejecuta de vuelta si cambia el token
   
 

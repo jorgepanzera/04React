@@ -37,3 +37,32 @@ export async function getPosts() {
   }
 
 }
+
+export async function incrementLikes(postId) { 
+
+  const token = localStorage.getItem("myThreePicsToken");
+
+  const headers = {
+    "Authorization": `Bearer ${token}`,
+  };
+
+  try {
+
+    console.log(headers)
+
+    const response = await axios.post(
+      `https://three-points.herokuapp.com/api/posts/${postId}/like`,
+      { headers: headers }
+    );
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401 && localStorage.getItem("myThreePicsToken")) {
+        localStorage.removeItem("myThreePicsToken");
+      }
+    }
+  }
+
+
+}

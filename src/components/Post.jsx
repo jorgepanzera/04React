@@ -1,8 +1,9 @@
 import { getDateTimeDifference } from "../assets/js/utils"
 import { useState } from "react"
+import {incrementLikes} from "../services/postServices"
 
 
-function Post({ img, createdAt, author, likes, text, comments }) {
+function Post({ id, img, createdAt, author, likes, text, comments }) {
 
     // Preparar datos para el post
     let now = new Date()
@@ -15,7 +16,8 @@ function Post({ img, createdAt, author, likes, text, comments }) {
     const [count, setCount] = useState(likes)
 
     // para gestionar los likes
-    const handleLikes = () => {
+    const handleLikes = async () => {
+      await incrementLikes(id)
       setCount(count+1)
     }
 
