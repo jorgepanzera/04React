@@ -38,12 +38,14 @@ export async function getPosts() {
 
 }
 
+
 export async function incrementLikes(postId) { 
 
   const token = localStorage.getItem("myThreePicsToken");
 
   const headers = {
     "Authorization": `Bearer ${token}`,
+    "Content-type": "application/json"
   };
 
   try {
@@ -51,10 +53,11 @@ export async function incrementLikes(postId) {
     console.log(headers)
 
     const response = await axios.post(
-      `https://three-points.herokuapp.com/api/posts/${postId}/like`,
+      `https://three-points.herokuapp.com/api/posts/${postId}/like`, {},
       { headers: headers }
     );
 
+    console.log(response)
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -64,5 +67,42 @@ export async function incrementLikes(postId) {
     }
   }
 
-
 }
+
+
+/*
+Igual pero con fetch
+export async function incrementLikes(postId) {
+
+  const token = localStorage.getItem("myThreePicsToken");
+
+  console.log(token)
+  console.log(postId)
+
+  try {
+
+    const response = await fetch(`https://three-points.herokuapp.com/api/posts/${postId}/like`, {
+     
+    // Adding method type
+    method: "POST",
+    
+    // Adding body or contents to send
+    body: JSON.stringify({}),
+    
+    // Adding headers to the request
+    headers: {
+        "Content-type": "application/json", "Authorization": `Bearer ${token}`
+    }
+    })
+    
+    console.log(response)
+    return response.json
+
+  } catch (error) {
+    console.log(error)
+  }
+  
+  
+}
+*/
+
