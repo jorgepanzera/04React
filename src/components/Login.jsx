@@ -15,11 +15,8 @@ function Login({onLoginComplete}) {
     
       let username = userInput.value
       let password = passInput.value
-
-      console.log(`handleSubmit username ${username} password ${password}`)
       
       if (await getToken(username,password)) {
-        console.log("login complete true")
         onLoginComplete(true)
       } else {
         setError(true)
@@ -44,7 +41,7 @@ function Login({onLoginComplete}) {
                 <button type="button" className="btn btn-primary btn-block mb-4" onClick={handleSubmit}>Sign in</button>
             </div>
         </div>
-        {error && <div className="text-danger mt-3">Invalid username or password</div>}
+        {error && <div className="text-danger fw-bold fs-5 login-error-back mt-3">Invalid username or password</div>}
       </div>
       
     );
