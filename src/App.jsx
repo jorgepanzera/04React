@@ -114,3 +114,31 @@ function App() {
 
 
 export default App;
+
+/*
+
+Acciones para semana 4
+- Mandar el conditional render del Loading y los post al PostList, que reciba en props el loading de App
+- Para mostrar ProtectedRoutes
+
+Protected Route
+App.js
+<Route  path='dashboard'
+      element={
+        <ProtectedRoute user={user}>
+          <Dashboard user={user} />
+        </ProtectedRoute>
+  }
+/>
+ProtectedRoute.js
+import { Navigate } from 'react-router-dom';
+
+const ProtectedRoute = ({ children, user }) => {
+  if (!user) {
+    return <Navigate to='/' />;
+  }
+  return children;
+};
+
+export default ProtectedRoute;
+*/
