@@ -75,29 +75,19 @@ function App() {
 
   if (loginOk) {
     if (section === "Normal") {
-      if (loading) {
         return (
           <div className="App">
-            <div className="container mx-auto text-center mt-5">
-              <h1>Loading...</h1>
-            </div>
-          </div>
-        );
-      } else {
-        return (
-          <div className="App">
-            <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
+            <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} loginOK={loginOk} />
             <SearchBar value={search} onSearch={onSearch} />
-            <PostList posts={filteredPosts} />
+            <PostList posts={filteredPosts} loading={loading} />
           </div>
         );
-      }
     }
   
     if (section === "Profile") {
       return (
         <div className="App">
-          <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} />
+          <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} loginOK={loginOk} />
           <Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />
         </div>
       );
@@ -105,10 +95,39 @@ function App() {
   } else {
     return(
       <div className="App">
+        <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} loginOK={loginOk} />
         <Login onLoginComplete={onLoginComplete}  />
       </div>
       )
   }
+
+  /* Resultado Deseado
+
+      <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<SharedLayout />}> // en SharedContent va NavBar y Outlet
+          <Route index element={
+              <ProtectedRoute user={user}>
+                <Home props de SearchBar y PostList />
+              </ProtectedRoute> // nueva Page Home, tiene SearchBar y PostList, o probar si puede ir SearchBar y Postlist dentro de ProtectedRoute
+          <Route path='login' element={<Login setUser={setUser}></Login>} />
+          <Route
+            path='profile'
+            element={
+              <ProtectedRoute user={user}>
+                <Profile user={user} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path='*' element={<Error />} /> // Crear Page Error
+        </Route>
+      </Routes>
+    </BrowserRouter>
+
+  */
+
+
 
 }
 
@@ -116,6 +135,9 @@ function App() {
 export default App;
 
 /*
+
+Ejemplo
+https://github.com/john-smilga/react-router-6-tutorial
 
 Acciones para semana 4
 - Mandar el conditional render del Loading y los post al PostList, que reciba en props el loading de App
@@ -141,4 +163,64 @@ const ProtectedRoute = ({ children, user }) => {
 };
 
 export default ProtectedRoute;
+
+-- Para el Login, que reciba el setUser del state de App
+const Login = ({ setUser }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name || !email) return;
+    setUser({ name: name, email: email });
+    navigate('/');
+  };
+
+-- Ejemplo completo de App
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import Home from './pages/Home';
+import About from './pages/About';
+import Products from './pages/Products';
+import Error from './pages/Error';
+import SharedLayout from './pages/SharedLayout';
+import SingleProduct from './pages/SingleProduct';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import ProtectedRoute from './pages/ProtectedRoute';
+import SharedProductLayout from './pages/SharedProductLayout';
+function App() {
+  const [user, setUser] = useState(null);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path='about' element={<About />} />
+
+          <Route path='products' element={<SharedProductLayout />}>
+            <Route index element={<Products />} />
+            <Route path=':productId' element={<SingleProduct />} />
+          </Route>
+
+          <Route path='login' element={<Login setUser={setUser}></Login>} />
+          <Route
+            path='dashboard'
+            element={
+              <ProtectedRoute user={user}>
+                <Dashboard user={user} />
+              </ProtectedRoute>
+            }
+          />
+          <Route path='*' element={<Error />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+
 */
