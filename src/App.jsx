@@ -7,6 +7,8 @@ import Profile from "./components/Profile";
 import Login from "./components/Login";
 import { getProfile } from "./services/userServices";
 import { getPosts } from "./services/postServices";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ProtectedRoute} from "./services/routeServices"
 
 function App() {
   // State
@@ -16,7 +18,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [filteredPosts, setFilteredPosts] = useState([])
   const [loginOk, setLoginOk] = useState(localStorage.getItem("myThreePicsToken"))
-  const [profile, setProfile] = useState()
+  const [currentUser, setCurrentUser] = useState()
 
   
   // Funciones que se usan desde componente NavBar
@@ -71,7 +73,14 @@ function App() {
   }, [loginOk]) // Se ejecuta de vuelta si cambia el token
   
 
-  // Render condicional
+  // React Router
+
+/*
+  <BrowserRouter>
+   <Routes>
+   </Routes> 
+  </BrowserRouter>
+*/
 
   if (loginOk) {
     if (section === "Normal") {
@@ -96,7 +105,7 @@ function App() {
     return(
       <div className="App">
         <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} loginOK={loginOk} />
-        <Login onLoginComplete={onLoginComplete}  />
+        <Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />
       </div>
       )
   }
@@ -157,7 +166,7 @@ import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children, user }) => {
   if (!user) {
-    return <Navigate to='/' />;
+    return <Navigate to='/login' />;
   }
   return children;
 };

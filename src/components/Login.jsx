@@ -1,7 +1,7 @@
 import {getToken} from '../services/userServices'
 import { useState } from 'react'
 
-function Login({onLoginComplete}) {
+function Login({onLoginComplete, setCurrentUser}) {
 
 
     // State
@@ -18,6 +18,7 @@ function Login({onLoginComplete}) {
       
       if (await getToken(username,password)) {
         onLoginComplete(true)
+        setCurrentUser(username)
       } else {
         setError(true)
       }
