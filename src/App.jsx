@@ -9,6 +9,7 @@ import { getProfile } from "./services/userServices";
 import { getPosts } from "./services/postServices";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Error from "./pages/Error"
+import { DebugLayout } from "./services/routeServices";
 
 
 function App() {
@@ -73,26 +74,27 @@ function App() {
   return(
     <BrowserRouter>
       <div className="App">
-      <NavBar loginOK={loginOk} />
+        <NavBar loginOK={loginOk} />
         <Routes>
-          {console.log(`App currentUser ${currentUser} loginOK ${loginOk}`)}
-          { currentUser ? (
-            <>
-              <Route path="/" element={ <>
-                                        <SearchBar value={search} onSearch={onSearch} />
-                                        <PostList posts={filteredPosts} loading={loading} />
-                                        </>
-                                      } />
-              <Route path="/profile" element={<Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />} />
-            </>
-            ) : (
+          <Route element={<DebugLayout />}>
+            { currentUser ? (
               <>
-              <Route path="/login" element={<Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />} />
-              <Route path="*" element={<Navigate to="/login" />} /> 
+                <Route path="/" element={ <>
+                                          <SearchBar value={search} onSearch={onSearch} />
+                                          <PostList posts={filteredPosts} loading={loading} />
+                                          </>
+                                        } />
+                <Route path="/profile" element={<Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />} />
               </>
-            )
-          }
-          <Route path="*" element={<Error />} />
+              ) : (
+                <>
+                <Route path="/login" element={<Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />} />
+                <Route path="*" element={<Navigate to="/login" />} /> 
+                </>
+              )
+            }
+            <Route path="*" element={<Error />} />
+          </Route>
         </Routes>
       </div>
     </BrowserRouter>

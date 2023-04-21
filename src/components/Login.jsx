@@ -1,5 +1,6 @@
 import {getToken} from '../services/userServices'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Login({onLoginComplete, setCurrentUser}) {
 
@@ -7,18 +8,23 @@ function Login({onLoginComplete, setCurrentUser}) {
     // State
     const [error, setError] = useState(false)
 
+    
+    const navigate = useNavigate()
+
     const handleSubmit = async (event) => {
       event.preventDefault()
 
       const userInput = document.getElementById("user-input")
       const passInput = document.getElementById("pass-input")
+
     
       let username = userInput.value
       let password = passInput.value
       
       if (await getToken(username,password)) {
+        setCurrentUser(username)        
         onLoginComplete(true)
-        setCurrentUser(username)
+        navigate("/")
       } else {
         setError(true)
       }
