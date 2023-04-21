@@ -1,35 +1,27 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import NavBar from "./components/NavBar";
+import NavBar from "./pages/NavBar";
 import SearchBar from "./components/SearchBar";
 import PostList from "./components/PostList";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
 import { getProfile } from "./services/userServices";
 import { getPosts } from "./services/postServices";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ProtectedRoute} from "./services/routeServices"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Error from "./pages/Error"
+
 
 function App() {
   // State
-  const [section, setSection] = useState("Normal")
   const [search, setSearch] = useState("");
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredPosts, setFilteredPosts] = useState([])
   const [loginOk, setLoginOk] = useState(localStorage.getItem("myThreePicsToken"))
-  const [currentUser, setCurrentUser] = useState()
+  const [profile, setProfile] = useState({"avatar" : "", "username" : "", "bio" : ""})
+  const [currentUser, setCurrentUser] = useState(localStorage.getItem("myThreePicscurrentUser"))
 
   
-  // Funciones que se usan desde componente NavBar
-  const onLogoClick = () => {
-    setSection("Normal");
-  };
-
-  const onProfileClick = () => {
-    setSection("Profile");
-  };
-
   // Funciones que se usan desde componente SearchBar
   const onSearch = (searchString) => {
     setSearch(searchString)
@@ -72,16 +64,69 @@ function App() {
     }
   }, [loginOk]) // Se ejecuta de vuelta si cambia el token
   
+  // Effect para guardar el usuario en localStorage cuando cambia
+  useEffect(() => {
+    localStorage.setItem('myThreePicscurrentUser', currentUser);
+  }, [currentUser]);
 
   // React Router
+  return(
+    <BrowserRouter>
+      <div className="App">
+      <NavBar loginOK={loginOk} />
+        <Routes>
+          {console.log(`App currentUser ${currentUser} loginOK ${loginOk}`)}
+          { currentUser ? (
+            <>
+              <Route path="/" element={ <>
+                                        <SearchBar value={search} onSearch={onSearch} />
+                                        <PostList posts={filteredPosts} loading={loading} />
+                                        </>
+                                      } />
+              <Route path="/profile" element={<Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />} />
+            </>
+            ) : (
+              <>
+              <Route path="/login" element={<Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />} />
+              <Route path="*" element={<Navigate to="/login" />} /> 
+              </>
+            )
+          }
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+
+  );
+
+}
+
+export default App;
+
+
+  /*
+return(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<SharedNavBar loginOK={loginOk} />}>
+        <Route index element={<ProtectedRoute user={currentUser}>
+                                <SearchBar value={search} onSearch={onSearch} />
+                                <PostList posts={filteredPosts} loading={loading} />
+                              </ProtectedRoute>} />
+        <Route path="profile" element={ <ProtectedRoute user={currentUser}>
+                                          <Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />
+                                         </ProtectedRoute>} />
+        <Route path="login" element={<Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />} />
+        <Route path="*" element={<Error />} />
+                             
+      </Route>
+    </Routes> 
+  </BrowserRouter>
+  );
+  */
+
 
 /*
-  <BrowserRouter>
-   <Routes>
-   </Routes> 
-  </BrowserRouter>
-*/
-
   if (loginOk) {
     if (section === "Normal") {
         return (
@@ -136,12 +181,6 @@ function App() {
 
   */
 
-
-
-}
-
-
-export default App;
 
 /*
 

@@ -29,4 +29,4 @@ function NavBar({onLogoClick, onProfileClick, loginOK}) {
 
   }
   
-  export default NavBar;
+//  export default NavBar;

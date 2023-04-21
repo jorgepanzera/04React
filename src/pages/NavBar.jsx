@@ -1,13 +1,17 @@
+import { useNavigate } from 'react-router-dom';
+
 function NavBar({loginOK}) {
 
     const logo = require('../assets/images/3picslogo.PNG')
 
-    const handleLogoClick = () => {
+    const navigate = useNavigate()
 
+    const handleLogoClick = () => {
+      navigate("/")
     }
 
     const handleProfileClick = () => [
-
+      navigate("/profile")
     ]
 
     if (loginOK) {
