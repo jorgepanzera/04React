@@ -1,6 +1,5 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import NavBar from "./pages/NavBar";
 import SearchBar from "./components/SearchBar";
 import PostList from "./components/PostList";
 import Profile from "./components/Profile";
@@ -10,6 +9,7 @@ import { getPosts } from "./services/postServices";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Error from "./pages/Error"
 import { DebugLayout } from "./services/routeServices";
+import SharedNavBar from "./pages/SharedNavBar";
 
 
 function App() {
@@ -36,6 +36,16 @@ function App() {
     console.log(`onLoginComplete ${value}`)
     setLoginOk(value)
   }
+
+  // Funciones que se usan borrar estado
+  const onExitApp = () => {
+    localStorage.removeItem("myThreePicsToken")
+    localStorage.removeItem("myThreePicscurrentUser")
+    setCurrentUser(null)
+    localStorage.removeItem("myThreePicscurrentUser")
+    setLoginOk(false)
+  }
+
 
   // UseEffect documentation
   // https://dmitripavlutin.com/react-useeffect-explanation/
@@ -74,26 +84,27 @@ function App() {
   return(
     <BrowserRouter>
       <div className="App">
-        <NavBar loginOK={loginOk} />
         <Routes>
           <Route element={<DebugLayout />}>
-            { currentUser ? (
-              <>
-                <Route path="/" element={ <>
-                                          <SearchBar value={search} onSearch={onSearch} />
-                                          <PostList posts={filteredPosts} loading={loading} />
-                                          </>
-                                        } />
-                <Route path="/profile" element={<Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />} />
-              </>
-              ) : (
+            <Route element={<SharedNavBar loginOK={loginOk} />}>
+              { currentUser ? (
                 <>
-                <Route path="/login" element={<Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />} />
-                <Route path="*" element={<Navigate to="/login" />} /> 
+                  <Route path="/" element={ <>
+                                            <SearchBar value={search} onSearch={onSearch} />
+                                            <PostList posts={filteredPosts} loading={loading} />
+                                            </>
+                                          } />
+                  <Route path="/profile" element={<Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} onExitApp={onExitApp} />} />
                 </>
-              )
-            }
-            <Route path="*" element={<Error />} />
+                ) : (
+                  <>
+                  <Route path="/login" element={<Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />} />
+                  <Route path="*" element={<Navigate to="/login" />} /> 
+                  </>
+                )
+              }
+              <Route path="*" element={<Error />} />
+            </Route>
           </Route>
         </Routes>
       </div>
@@ -106,91 +117,13 @@ function App() {
 export default App;
 
 
-  /*
-return(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<SharedNavBar loginOK={loginOk} />}>
-        <Route index element={<ProtectedRoute user={currentUser}>
-                                <SearchBar value={search} onSearch={onSearch} />
-                                <PostList posts={filteredPosts} loading={loading} />
-                              </ProtectedRoute>} />
-        <Route path="profile" element={ <ProtectedRoute user={currentUser}>
-                                          <Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />
-                                         </ProtectedRoute>} />
-        <Route path="login" element={<Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />} />
-        <Route path="*" element={<Error />} />
-                             
-      </Route>
-    </Routes> 
-  </BrowserRouter>
-  );
-  */
-
-
-/*
-  if (loginOk) {
-    if (section === "Normal") {
-        return (
-          <div className="App">
-            <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} loginOK={loginOk} />
-            <SearchBar value={search} onSearch={onSearch} />
-            <PostList posts={filteredPosts} loading={loading} />
-          </div>
-        );
-    }
-  
-    if (section === "Profile") {
-      return (
-        <div className="App">
-          <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} loginOK={loginOk} />
-          <Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} />
-        </div>
-      );
-    }
-  } else {
-    return(
-      <div className="App">
-        <NavBar onLogoClick={onLogoClick} onProfileClick={onProfileClick} loginOK={loginOk} />
-        <Login onLoginComplete={onLoginComplete} setCurrentUser={setCurrentUser} />
-      </div>
-      )
-  }
-
-  /* Resultado Deseado
-
-      <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<SharedLayout />}> // en SharedContent va NavBar y Outlet
-          <Route index element={
-              <ProtectedRoute user={user}>
-                <Home props de SearchBar y PostList />
-              </ProtectedRoute> // nueva Page Home, tiene SearchBar y PostList, o probar si puede ir SearchBar y Postlist dentro de ProtectedRoute
-          <Route path='login' element={<Login setUser={setUser}></Login>} />
-          <Route
-            path='profile'
-            element={
-              <ProtectedRoute user={user}>
-                <Profile user={user} />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route path='*' element={<Error />} /> // Crear Page Error
-        </Route>
-      </Routes>
-    </BrowserRouter>
-
-  */
-
 
 /*
 
 Ejemplo
 https://github.com/john-smilga/react-router-6-tutorial
 
-Acciones para semana 4
-- Mandar el conditional render del Loading y los post al PostList, que reciba en props el loading de App
+
 - Para mostrar ProtectedRoutes
 
 Protected Route
@@ -213,64 +146,5 @@ const ProtectedRoute = ({ children, user }) => {
 };
 
 export default ProtectedRoute;
-
--- Para el Login, que reciba el setUser del state de App
-const Login = ({ setUser }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!name || !email) return;
-    setUser({ name: name, email: email });
-    navigate('/');
-  };
-
--- Ejemplo completo de App
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
-import Home from './pages/Home';
-import About from './pages/About';
-import Products from './pages/Products';
-import Error from './pages/Error';
-import SharedLayout from './pages/SharedLayout';
-import SingleProduct from './pages/SingleProduct';
-import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
-import ProtectedRoute from './pages/ProtectedRoute';
-import SharedProductLayout from './pages/SharedProductLayout';
-function App() {
-  const [user, setUser] = useState(null);
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<SharedLayout />}>
-          <Route index element={<Home />} />
-          <Route path='about' element={<About />} />
-
-          <Route path='products' element={<SharedProductLayout />}>
-            <Route index element={<Products />} />
-            <Route path=':productId' element={<SingleProduct />} />
-          </Route>
-
-          <Route path='login' element={<Login setUser={setUser}></Login>} />
-          <Route
-            path='dashboard'
-            element={
-              <ProtectedRoute user={user}>
-                <Dashboard user={user} />
-              </ProtectedRoute>
-            }
-          />
-          <Route path='*' element={<Error />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-
 */
+

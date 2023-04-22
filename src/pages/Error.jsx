@@ -9,7 +9,7 @@ function Error() {
     <div className="App">
       <div className="container mx-auto text-center mt-5">
         <h1>Ooops Seems this page doesnt exists...</h1>
-        <button type="button" class="btn btn-info mt-3" onClick={handleClick}>
+        <button type="button" className="btn btn-info mt-3" onClick={handleClick}>
           Go Home
         </button>
       </div>
