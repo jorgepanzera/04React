@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export async function getToken(username, password) {
   try {
     const headers = {
@@ -13,24 +14,13 @@ export async function getToken(username, password) {
       { headers: headers }
     );
 
-    if (response.data.token) {
-      localStorage.setItem("myThreePicsToken", response.data.token);
-      return true;
-    } else {
-      return false;
-    }
+    return response.data
+
   } catch (error) {
-    if (error.response) {
-      if (
-        error.response.status === 401 &&
-        localStorage.getItem("myThreePicsToken")
-      ) {
-        localStorage.removeItem("myThreePicsToken");
-      }
-    }
-    return false;
+    throw(error)
   }
 }
+
 
 /* Usuario creado desde Postman password P4ssW0rd!#
 {
@@ -66,11 +56,7 @@ export async function getProfile() {
 
     return response.data;
   } catch (error) {
-    if (error.response) {
-      if (error.response.status === 401 && localStorage.getItem("myThreePicsToken")) {
-        localStorage.removeItem("myThreePicsToken");
-      }
-    }
+      throw(error)
   }
 
 }

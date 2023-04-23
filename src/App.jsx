@@ -55,11 +55,19 @@ function App() {
 
     // Cargar posts desde API
     if (loginOk) {
-      getPosts().then((data) => {
-        setPosts(data);
-        setFilteredPosts(data)
-        setLoading(false);
-      });
+      getPosts()
+        .then((data) => {
+          setPosts(data);
+          setFilteredPosts(data)
+          setLoading(false);
+        })
+        .catch(error => {
+          if (error.response) {
+            if (error.response.status === 401) {
+              onExitApp()
+            }
+          }
+        })        
     }
   }, [loginOk]) // Se ejecuta de vuelta si cambia el token
 
@@ -69,9 +77,17 @@ function App() {
 
     // Cargar profile desde API
     if (loginOk) {
-      getProfile().then((data) => { 
-        setProfile(JSON.parse(`{"avatar" : "${data.avatar}", "username" : "${data.username}", "bio" : "${data.bio}"}`))
-      });
+      getProfile()
+        .then((data) => { 
+          setProfile(JSON.parse(`{"avatar" : "${data.avatar}", "username" : "${data.username}", "bio" : "${data.bio}"}`))
+        })
+        .catch(error => {
+          if (error.response) {
+            if (error.response.status === 401) {
+              onExitApp()
+            }
+          }
+        })
     }
   }, [loginOk]) // Se ejecuta de vuelta si cambia el token
   
@@ -127,27 +143,5 @@ Ejemplo
 https://github.com/john-smilga/react-router-6-tutorial
 
 
-- Para mostrar ProtectedRoutes
-
-Protected Route
-App.js
-<Route  path='dashboard'
-      element={
-        <ProtectedRoute user={user}>
-          <Dashboard user={user} />
-        </ProtectedRoute>
-  }
-/>
-ProtectedRoute.js
-import { Navigate } from 'react-router-dom';
-
-const ProtectedRoute = ({ children, user }) => {
-  if (!user) {
-    return <Navigate to='/login' />;
-  }
-  return children;
-};
-
-export default ProtectedRoute;
 */
 

@@ -21,6 +21,18 @@ function Login({onLoginComplete, setCurrentUser}) {
       let username = userInput.value
       let password = passInput.value
       
+      getToken(username, password)
+        .then((data) => { 
+          localStorage.setItem("myThreePicsToken", data.token);
+          setCurrentUser(username)        
+          onLoginComplete(true)
+          navigate("/")
+        })
+        .catch(error => { 
+            setError(true) 
+        })
+
+      /*  
       if (await getToken(username,password)) {
         setCurrentUser(username)        
         onLoginComplete(true)
@@ -28,6 +40,8 @@ function Login({onLoginComplete, setCurrentUser}) {
       } else {
         setError(true)
       }
+      */
+
      }
 
     return (
