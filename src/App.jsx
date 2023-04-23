@@ -77,7 +77,10 @@ function App() {
   
   // Effect para guardar el usuario en localStorage cuando cambia
   useEffect(() => {
-    localStorage.setItem('myThreePicscurrentUser', currentUser);
+    console.log(`Effect currentUser ${currentUser}`)
+    if (!(currentUser===null)) {
+      localStorage.setItem('myThreePicscurrentUser', currentUser);
+    }
   }, [currentUser]);
 
   // React Router
@@ -95,6 +98,7 @@ function App() {
                                             </>
                                           } />
                   <Route path="/profile" element={<Profile avatar={profile.avatar} username={profile.username} bio={profile.bio} onExitApp={onExitApp} />} />
+                  <Route path="*" element={<Error />} />
                 </>
                 ) : (
                   <>
@@ -103,7 +107,6 @@ function App() {
                   </>
                 )
               }
-              <Route path="*" element={<Error />} />
             </Route>
           </Route>
         </Routes>
