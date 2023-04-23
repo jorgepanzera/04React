@@ -47,14 +47,14 @@ export async function incrementLikes(postId) {
 
   try {
 
-    console.log(headers)
+    //console.log(headers)
 
     const response = await axios.post(
       `https://three-points.herokuapp.com/api/posts/${postId}/like`, {},
       { headers: headers }
     );
 
-    console.log(response)
+    //console.log(response)
     return response.data;
   } catch (error) {
     if (error.response) {

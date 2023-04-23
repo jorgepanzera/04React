@@ -1,20 +1,26 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import SearchBar from "./components/SearchBar";
-import PostList from "./components/PostList";
-import Profile from "./components/Profile";
-import Login from "./components/Login";
 import { getProfile } from "./services/userServices";
 import { getPosts } from "./services/postServices";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+
+// Paginas de la aplicacion
+import PostList from "./pages/PostList"
+import Profile from "./pages/Profile"
+import Login from "./pages/Login"
 import Error from "./pages/Error"
-import { DebugLayout } from "./services/routeServices";
-import SharedNavBar from "./pages/SharedNavBar";
+import SearchBar from "./pages/SearchBar"
+
+// Componentes genericos de la aplicacion
+import SharedNavBar from "./components/SharedNavBar"
+import { DebugLayout } from "./components/DebugLayout"
+
 
 
 function App() {
   // State
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("")
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredPosts, setFilteredPosts] = useState([])
@@ -33,7 +39,6 @@ function App() {
 
   // Funciones que se usan desde componente Login
   const onLoginComplete = (value) => {
-    console.log(`onLoginComplete ${value}`)
     setLoginOk(value)
   }
 
@@ -93,7 +98,7 @@ function App() {
   
   // Effect para guardar el usuario en localStorage cuando cambia
   useEffect(() => {
-    console.log(`Effect currentUser ${currentUser}`)
+    //console.log(`Effect currentUser ${currentUser}`)
     if (!(currentUser===null)) {
       localStorage.setItem('myThreePicscurrentUser', currentUser);
     }
